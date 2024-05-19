@@ -13,8 +13,17 @@ else:
   from getkey import keys
   from getkey import getkey as GETkey
 
-def C(d):
+GTIME = time.time()
+def C(f = ''):
+  global GTIME
   os.system('clear' if os.name!='nt' else 'cls')
+def UPME():
+  global GTIME
+  if time.time()-GTIME > .03:
+    GTIME = time.time()
+    C()
+    printmaze(mazeq)
+c = C
 def getkey():
   return (h if (h:=str(msvcrt.getch())[2:-1]) not in somekeys.keys() or h in ['P','H','K','M'] else somekeys[h] if h!='\\xe0' else somekeys[str(msvcrt.getch())[2:-1]]) if WINDOWS else GETkey()
 UP='up' if WINDOWS else keys.UP
@@ -1272,9 +1281,8 @@ f=[115,101,99,114,101,116,32,115,116,117,102,102,32,104,101,114,101]
 da=True
 howman=-1
 blockgood=False
-MUCH=0
 def spikeem(which,multi=False,chart=[],chart2=[],dis=False):
-  global mazeq,box1,box2,box3,box4,j,da,howman,blockgood,MUCH,z
+  global mazeq,box1,box2,box3,box4,j,da,howman,blockgood,z
   z2=z
   j=False
   ew2=True
@@ -1384,11 +1392,7 @@ def spikeem(which,multi=False,chart=[],chart2=[],dis=False):
           thingon+=1
       defi+=g
       if qx==True or dis==False and tr==1:
-        print("\033[H",end='')
-        printmaze(mazeq)
-        sys.stdout.flush()
-        print("\033[H",end='')
-        printmaze(mazeq)
+        UPME()
         sys.stdout.flush()
       for i in range(5):
         if y_t=='up':
@@ -1404,11 +1408,7 @@ def spikeem(which,multi=False,chart=[],chart2=[],dis=False):
         print(a)
     howman-=1
     sys.stdout.flush()
-    C('clear')
-    MUCH+=1
-    if MUCH<3:
-      printmaze(mazeq)
-    MUCH-=1
+    UPME()
     if howman<=0 and j==False:
       blockgood=True
     if multi==True or dis==True:
@@ -1424,21 +1424,13 @@ def spikeem(which,multi=False,chart=[],chart2=[],dis=False):
       for i in range(30):
         if nothing()==False:
           sys.stdout.flush()
-          if i%10!=0:
-            print("\033[H",end='')
-          else:
-            C('clear')
-          printmaze(mazeq)
+          UPME()
           time.sleep(.4)
       da=True
   except:
     howman-=1
     sys.stdout.flush()
-    C('clear')
-    MUCH+=1
-    if MUCH<3:
-      printmaze(mazeq)
-    MUCH-=1
+    UPME()
     if howman<=0 and j==False:
       blockgood=True
     if multi==True or dis==True:
@@ -1448,11 +1440,7 @@ def spikeem(which,multi=False,chart=[],chart2=[],dis=False):
       for i in range(30):
         if nothing()==False:
           sys.stdout.flush()
-          if i%10!=0:
-            print("\033[H",end='')
-          else:
-            C('clear')
-          printmaze(mazeq)
+          UPME()
           time.sleep(.4)  
       da=True
 
@@ -1872,8 +1860,6 @@ def move(dir):
         time.sleep(2)
         print("Flex it if you want pogggg")
         input('[Enter to continue]')
-        with open(name+'3.json','w') as nou:
-          nou.write([1])
         C('clear')
       elif mazeq[box2-2]=='Y' or mazeq[box4-2]=='Y' or mazeq[box1-2]=='Y' or mazeq[box3-2]=='Y':
         secretpog()
@@ -2034,7 +2020,7 @@ mazeq=stuff[z]
 mazeq_2=mazeq.copy()
 sped1=time.time()
 while True:
-  printmaze(mazeq)
+  UPME()
   if randomstuff==True:
     colorchoice=colordict[random.randint(1,15)]
     colorchoice2=colordict[random.randint(1,15)]
@@ -2053,8 +2039,6 @@ while True:
     move('down')
   if keyz=='d' or keyz==RIGHT:
     move("right")
-  if keyz=='c':
-    C('clear')
   if keyz=='z':
     if 'y' in input("Do you want to exit?\n>").lower():
       break
@@ -2071,5 +2055,4 @@ while True:
     oooG=False
     for i in chartindes[z]:
       mazeq[i]='a'
-  print("\033[H",end="")
   
